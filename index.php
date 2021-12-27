@@ -7,7 +7,83 @@
 
     $koneksi = mysqli_connect($host, $user, $pass, $database) or die (mysqli_eror($koneksi));
 
+    //jika tombol simpan di klik
+    if(isset($_POST['bsimpan']))
+    {
+        //Pengujian apakah data akan diedit atau di simpan baru
+        if($_GET['hal'] == "edit")
+        {
+            //Data akan diedit
+            $edit = mysqli_query($koneksi, "UPDATE tmhs set
+                                                nim = '$_POST[tnim]',
+                                                nama = '$_POST[tnama]',
+                                                alamat = '$_POST[talamat]',
+                                                prodi = '$_POST[tprodi]'
+                                            WHERE id_mhs = '$_GET[id]'
+                                        ");
+            if($edit) //jika edit sukses
+            {
+                echo "<script>
+                        alert('edit data Sukses');
+                        document.location='index.php';
+                    </script>";
+            }
+            else
+            {
+                echo "<script>
+                        alert('edit data Gagal!!');
+                        document.location='index.php';
+                    </script>";
+            }
+        }else
+        {
+            //Data akan disimpan baru
+            $simpan = mysqli_query($koneksi, "INSERT INTO tmhs (nim, nama, alamat, prodi)
+                                          VALUES ('$_POST[tnim]', 
+                                                 '$_POST[tnama]', 
+                                                 '$_POST[talamat]', 
+                                                 '$_POST[prodi]')
+                                        ");
+            if($simpan) //jika simpan sukses
+            {
+                echo "<script>
+                        alert('Simpan data Sukses');
+                        document.location='index.php';
+                    </script>";
+            }
+            else
+            {
+                echo "<script>
+                        alert('Simpan data Gagal!!');
+                        document.location='index.php';
+                    </script>";
+            }
+            }
+        }
+
+
+
+        //pengujian jika tombol edit atau hapus di klik
+        if(isset($_GET['hal']))
+        {
+            //pengujian jike edit data
+            if($_GET["hal"] == "edit")
+            {
+                //tampil data yang akan diedit
+                $tampil = mysqli_query($koneksi, "SELECT * FROM tmhs WHERE id_mhs = '$_GET[id]' ");
+                $data = mysqli_fetch_array($tampil);
+                if($data)
+                {
+                    //jika data ditemukan, maka data ditampung ke dalam variabel
+                    $vnim = $data['nim'];
+                    $vnama = $data['nama'];
+                    $valamat = $data['alamat'];
+                    $vprodi = $data['prodi'];
+                }
+            }
+        }
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,7 +93,7 @@
 <body>
 <div class="container">
 
-    <h1 class="text-center">CRUD PHP dan Mysq + Boostrap 4</h1>
+    <h1 class="text-center">CRUD PHP dan Mysql + Boostrap 4</h1>
     <h2 class="text-center">@ImesyeLumairo</h2>
 
     <!-- Awal Card Form -->
@@ -29,23 +105,23 @@
         <form method="post" action="">
             <div class="form-group">
                 <label>NIM</label>
-                <input type="text" name="tnim" class="form-control" placeholder="Input Nim Anda disini!" required>
+                <input type="text" name="tnim" value="<?=@$vnim?>" class="form-control" placeholder="Input Nim Anda disini!" required>
             </div>
             <div class="form-group">
                 <label>NAMA</label>
-                <input type="text" name="tnama" class="form-control" placeholder="Input Nama Anda disini!" required>
+                <input type="text" name="tnama" value="<?=@$vnama?>" class="form-control" placeholder="Input Nama Anda disini!" required>
             </div>
             <div class="form-group">
                 <label>ALAMAT</label>
-                <textarea class="form-control" name="talamat" placeholder="Input Alamat Anda Disini!"></textarea>
+                <textarea class="form-control" name="talamat" placeholder="Input Alamat Anda Disini!"><?=@$valamat?></textarea>
             </div>
             <div class="form-group">
                 <label>JURUSAN</label>
-               <select class="form-control" name="tjurusan">
-                   <option></option>
+               <select class="form-control" name="tprodi">
+                   <option value="<?=@$vprodi?>"><?=@$vprodi?></option>
                    <option value="D3"-Keperawatan">D3-Keperawatan></option>
-                   <option value="D3"-Perikanan">D3-Perikanan></option>
-                   <option value="D3"-Sistem Informasi">D3-Sistem Informasi></option>
+                   <option value="D3"-Perikanan">D3-Perikanan</option>
+                   <option value="D3"-Sistem Informasi">D3-Sistem Informasi</option>
                </select>
             </div>
 
@@ -86,8 +162,8 @@
             <td><?=$data['alamat']?></td>
             <td><?=$data['prodi']?></td>
             <td>
-                <a href="#"> Edit </a>
-                <a href="#"> Hapus </a>
+                <a href="index.php?hal=edit&id=<?=$data['id_mhs']?>" class="btn-warning"> Edit </a>
+                <a href="#" class="btn-danger"> Hapus </a>
             </td>
         </tr>
         <?php endwhile; //penutup perulangan while ?>
