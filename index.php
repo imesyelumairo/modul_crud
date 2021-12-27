@@ -58,8 +58,8 @@
                         document.location='index.php';
                     </script>";
             }
-            }
         }
+    }
 
 
 
@@ -79,6 +79,17 @@
                     $vnama = $data['nama'];
                     $valamat = $data['alamat'];
                     $vprodi = $data['prodi'];
+                }
+            }
+            else if ($_GET ['hal'] == "hapus")
+            {
+                //Persiapan hapus data
+                $hapus = mysqli_query($koneksi, "DELETE FROM tmhs WHERE id_mhs = '$_GET[id]' ");
+                if($hapus){
+                    echo "<script>
+                        alert('Hapus data Sukses!!');
+                        document.location='index.php';
+                    </script>";
                 }
             }
         }
@@ -162,8 +173,9 @@
             <td><?=$data['alamat']?></td>
             <td><?=$data['prodi']?></td>
             <td>
-                <a href="index.php?hal=edit&id=<?=$data['id_mhs']?>" class="btn-warning"> Edit </a>
-                <a href="#" class="btn-danger"> Hapus </a>
+                <a href="index.php?hal=edit&id=<?=$data['id_mhs']?>" class="btn btn-warning"> Edit </a>
+                <a href="index.php?hal=hapus&id=<?=$data['id_mhs']?>" 
+                onclick="return confirm('Apakah yakin ingin menghapus data ini?')" class="btn btn-danger"> Hapus </a>
             </td>
         </tr>
         <?php endwhile; //penutup perulangan while ?>
