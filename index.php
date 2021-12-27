@@ -1,11 +1,11 @@
 <?php
     //koneksi Database
-    $server = "localhost";
-    $user = "root";
-    $pass ="";
-    $database = "dblatihan";
+    $host = "db4free.net";
+    $user = "imesyelumairo";
+    $pass ="1905005lumairo";
+    $database = "doublenn";
 
-    $koneksi = mysqli_connect($server, $user, $pass, $database) or die (mysqli_eror($koneksi));
+    $koneksi = mysqli_connect($host, $user, $pass, $database) or die (mysqli_eror($koneksi));
 
 ?>
 <!DOCTYPE html>
