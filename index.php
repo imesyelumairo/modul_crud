@@ -7,14 +7,14 @@
 
     $koneksi = mysqli_connect($host, $user, $pass, $database) or die (mysqli_eror($koneksi));
 
-    //jika tombol simpan di klik
+    //jika tombol simpan diklik
     if(isset($_POST['bsimpan']))
     {
-        //Pengujian apakah data akan diedit atau di simpan baru
+        //Pengujian apakah data akan diedit atau disimpan baru
         if($_GET['hal'] == "edit")
         {
             //Data akan diedit
-            $edit = mysqli_query($koneksi, "UPDATE tmhs set
+            $edit = mysqli_query($koneksi, "UPDATE mahasiswa set
                                                 nim = '$_POST[tnim]',
                                                 nama = '$_POST[tnama]',
                                                 alamat = '$_POST[talamat]',
@@ -38,11 +38,11 @@
         }else
         {
             //Data akan disimpan baru
-            $simpan = mysqli_query($koneksi, "INSERT INTO tmhs (nim, nama, alamat, prodi)
-                                          VALUES ('$_POST[tnim]', 
-                                                 '$_POST[tnama]', 
-                                                 '$_POST[talamat]', 
-                                                 '$_POST[prodi]')
+            $simpan = mysqli_query($koneksi, "INSERT INTO mahasiswa (nim, nama, alamat, prodi)
+                                              VALUES ('$_POST[tnim]', 
+                                                      '$_POST[tnama]', 
+                                                      '$_POST[talamat]', 
+                                                      '$_POST[tprodi]')
                                         ");
             if($simpan) //jika simpan sukses
             {
@@ -70,7 +70,7 @@
             if($_GET["hal"] == "edit")
             {
                 //tampil data yang akan diedit
-                $tampil = mysqli_query($koneksi, "SELECT * FROM tmhs WHERE id_mhs = '$_GET[id]' ");
+                $tampil = mysqli_query($koneksi, "SELECT * FROM mahasiswa WHERE id_mhs = '$_GET[id]' ");
                 $data = mysqli_fetch_array($tampil);
                 if($data)
                 {
@@ -84,7 +84,7 @@
             else if ($_GET ['hal'] == "hapus")
             {
                 //Persiapan hapus data
-                $hapus = mysqli_query($koneksi, "DELETE FROM tmhs WHERE id_mhs = '$_GET[id]' ");
+                $hapus = mysqli_query($koneksi, "DELETE FROM mahasiswa WHERE id_mhs = '$_GET[id]' ");
                 if($hapus){
                     echo "<script>
                         alert('Hapus data Sukses!!');
@@ -98,14 +98,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>CRUD 2021 PHP & Mysq + Boostrap 4</title>
+    <title>Jangan lupa Senyum:)</title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 </head>
 <body>
 <div class="container">
 
-    <h1 class="text-center">CRUD PHP dan Mysql + Boostrap 4</h1>
-    <h2 class="text-center">@ImesyeLumairo</h2>
+    <h1 class="text-center">UAS WEBPROGRAMMING 2021 CRUD dan Database Db4free.net</h1>
+    <h2 class="text-center">@ImesyeLumairo (1905005)</h2>
 
     <!-- Awal Card Form -->
     <div class="card mt-3">
@@ -130,9 +130,9 @@
                 <label>JURUSAN</label>
                <select class="form-control" name="tprodi">
                    <option value="<?=@$vprodi?>"><?=@$vprodi?></option>
-                   <option value="D3"-Keperawatan">D3-Keperawatan></option>
-                   <option value="D3"-Perikanan">D3-Perikanan</option>
-                   <option value="D3"-Sistem Informasi">D3-Sistem Informasi</option>
+                   <option value="D3-Keperawatan"> D3-Keperawatan</option>
+                   <option value="D3-Perikanan">D3-Perikanan</option>
+                   <option value="D3-Teknik Komputer dan Komunikasi">D3-Teknik Komputer dan Komunikasi</option>
                </select>
             </div>
 
@@ -162,7 +162,7 @@
         </tr>
         <?php
             $no = 1;
-            $tampil = mysqli_query($koneksi, "SELECT * from tmhs order by id_mhs desc");
+            $tampil = mysqli_query($koneksi, "SELECT * from mahasiswa order by id_mhs desc");
             while($data = mysqli_fetch_array($tampil)) : 
 
         ?>
